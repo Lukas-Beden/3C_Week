@@ -8,10 +8,12 @@ public class InputHandler : MonoBehaviour
     private Vector2 _move = new();
     private Vector2 _look = new();
     private bool _jump;
+    private float _changeCam;
 
     public Vector2 Move => _move;
     public Vector2 Look => _look;
     public bool Jump => _jump;
+    public float ChangeCam => _changeCam;
 
     public void OnMove(CallbackContext ctx)
     {
@@ -33,5 +35,10 @@ public class InputHandler : MonoBehaviour
         {
             _jump = false;
         }
+    }
+
+    public void OnChangeCam(CallbackContext ctx)
+    {
+        _changeCam = ctx.ReadValue<float>();
     }
 }

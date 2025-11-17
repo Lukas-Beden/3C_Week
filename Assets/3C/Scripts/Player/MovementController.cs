@@ -10,8 +10,8 @@ public class MovementController : MonoBehaviour
     int _moveSpeed = 5;
 
     [Header("Camera")]
-    [SerializeField] CinemachineCamera _mainCamera;
-    float rotationSpeed = 720f;
+    //[SerializeField] CinemachineCamera _mainCamera;
+    float rotationSpeed = 360f;
 
     [Header("Jump")]
     [SerializeField] LayerMask groundLayer;
@@ -37,22 +37,25 @@ public class MovementController : MonoBehaviour
 
         if (move != Vector2.zero)
         {
-            Quaternion targetRotation = Quaternion.Euler(0, _mainCamera.transform.eulerAngles.y, 0);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
-            Vector3 camForward = _mainCamera.transform.forward;
-            Vector3 camRight = _mainCamera.transform.right;
+            Vector3 camForward = Camera.main.transform.forward;
+            Vector3 camRight = Camera.main.transform.right;
             camForward.y = 0f;
             camRight.y = 0f;
             camForward.Normalize();
             camRight.Normalize();
 
             Vector3 moveDirection = camForward * move.y + camRight * move.x;
+
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+
             transform.position += moveDirection * (_moveSpeed * Time.deltaTime);
         }
     }
-
-
 
     bool IsGrounded()
     {
