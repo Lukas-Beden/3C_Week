@@ -1591,7 +1591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputHandler: {fileID: 1456909595}
-  _mainCamera: {fileID: 1936256803}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
