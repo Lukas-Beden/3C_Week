@@ -40,20 +40,10 @@ public class MovementAC : MonoBehaviour
         Vector3 moveDirection = _camera.transform.forward * move.y + _camera.transform.right * move.x;
         moveDirection.y = 0;
 
-        if (moveDirection != Vector3.zero)
-        {
-            Vector3 targetPosition = new Vector3(moveDirection.x + transform.position.x, 0.5f, moveDirection.z + transform.position.z);
-            _cameraLookAtAC.transform.position = Vector3.Slerp(_cameraLookAtAC.transform.position, targetPosition, _cameraMoveSpeed * Time.deltaTime);
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
 
-            transform.position += moveDirection.normalized * (_moveSpeed * Time.deltaTime);
-        } else
-        {
-            Vector3 targetPosition = new Vector3(transform.position.x, 0.5f, transform.position.z);
-            _cameraLookAtAC.transform.position = Vector3.Slerp(_cameraLookAtAC.transform.position, targetPosition, _cameraMoveSpeed * Time.deltaTime);
-        }
-
+        transform.position += moveDirection.normalized * (_moveSpeed * Time.deltaTime);
     }
     void ChangeCamType()
     {

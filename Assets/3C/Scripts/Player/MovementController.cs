@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] CinemachineInputAxisController _axisController;
 
     [Header("Movement")]
-    int _moveSpeed = 5;
+    int _moveSpeed = 10;
 
     [Header("Camera")]
     //[SerializeField] CinemachineCamera _mainCamera;
@@ -20,12 +20,13 @@ public class MovementController : MonoBehaviour
 
     [Header("ZZZ")]
     [SerializeField] CinemachineCamera _cinemachineCam;
-    [SerializeField] GameObject _targetGroup;
+    [SerializeField] CinemachineTargetGroup _targetGroup;
+    [SerializeField] GameObject _obstacle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _cinemachineCam.Target = new() { LookAtTarget=null, TrackingTarget = null };
+    
     }
 
     // Update is called once per frame
@@ -80,11 +81,11 @@ public class MovementController : MonoBehaviour
     {
         if (_inputHandler.LockOn)
         {
-            _cinemachineCam.LookAt = _targetGroup.transform;
+            _targetGroup.AddMember(_obstacle.transform, 1, 5);
             _axisController.enabled = false;
         } else
         {
-            _cinemachineCam.LookAt = transform;
+            _targetGroup.RemoveMember(_obstacle.transform);
             _axisController.enabled = true;
         }
     }
