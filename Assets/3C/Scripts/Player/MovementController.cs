@@ -5,6 +5,7 @@ public class MovementController : MonoBehaviour
 {
     [Header("Scripts")]
     [SerializeField] InputHandler _inputHandler;
+    [SerializeField] CinemachineInputAxisController _axisController;
 
     [Header("Movement")]
     int _moveSpeed = 5;
@@ -17,18 +18,22 @@ public class MovementController : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     int jumpForce = 5;
 
+    [Header("ZZZ")]
+    [SerializeField] CinemachineCamera _cinemachineCam;
+    [SerializeField] GameObject _targetGroup;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        _cinemachineCam.Target = new() { LookAtTarget=null, TrackingTarget = null };
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        //Look();
+        Move(); 
         Jump();
+        LockOn();
     }
 
     void Move()
@@ -59,7 +64,7 @@ public class MovementController : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f, groundLayer);
+        return Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayer);
     }
 
     void Jump()
@@ -68,6 +73,19 @@ public class MovementController : MonoBehaviour
         {
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             rb.linearVelocity = new Vector3(0, jumpForce, 0);
+        }
+    }
+
+    void LockOn()
+    {
+        if (_inputHandler.LockOn)
+        {
+            _cinemachineCam.LookAt = _targetGroup.transform;
+            _axisController.enabled = false;
+        } else
+        {
+            _cinemachineCam.LookAt = transform;
+            _axisController.enabled = true;
         }
     }
 }

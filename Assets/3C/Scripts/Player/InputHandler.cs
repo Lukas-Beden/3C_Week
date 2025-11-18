@@ -9,11 +9,13 @@ public class InputHandler : MonoBehaviour
     private Vector2 _look = new();
     private bool _jump;
     private float _changeCam;
+    private bool _lockOn = false;
 
     public Vector2 Move => _move;
     public Vector2 Look => _look;
     public bool Jump => _jump;
     public float ChangeCam => _changeCam;
+    public bool LockOn => _lockOn;
 
     public void OnMove(CallbackContext ctx)
     {
@@ -40,5 +42,13 @@ public class InputHandler : MonoBehaviour
     public void OnChangeCam(CallbackContext ctx)
     {
         _changeCam = ctx.ReadValue<float>();
+    }
+
+    public void OnLockOn(CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            _lockOn = !_lockOn;
+        }
     }
 }
